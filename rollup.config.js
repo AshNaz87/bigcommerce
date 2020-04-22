@@ -10,7 +10,7 @@ import { version } from "./package.json";
 const banner = `/**
  * @license 
  * Ideal Postcodes <https://ideal-postcodes.co.uk>
- * BigCommerce Plugin ${version}
+ * BigCommerce Integration ${version}
  * Copyright IDDQD Limited, all rights reserved
  */`;
 
