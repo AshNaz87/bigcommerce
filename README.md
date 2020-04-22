@@ -24,6 +24,18 @@ BigCommerce introduced a breaking change? Contact [support](https://ideal-postco
 - [GitHub Repository](https://github.com/ideal-postcodes/bigcommerce)
 - [CDN](https://www.jsdelivr.com/package/npm/@ideal-postcodes/bigcommerce)
 
+## Configuration Options
+
+Upon loading, the script will exit unless a global configuration object (`idpcConfig`) is detected.
+
+```html
+<script type="text/javascript">
+  window.idpcConfig = {
+    apiKey: "iddqd",
+  };
+<script>
+```
+
 ## Test
 
 ```bash
