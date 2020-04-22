@@ -15,7 +15,7 @@
     "test": "npm run lint",
     "lint": "eslint lib/**/*.ts",
     "build": "rollup -c",
-    "release": "semantic-release --no-ci",
+    "semantic-release": "semantic-release --no-ci",
     "prepublishOnly": "npm test && npm run build"
   },
   "prettier": {
