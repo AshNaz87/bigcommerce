@@ -6,6 +6,7 @@
 
 [![Dependency Status](https://david-dm.org/ideal-postcodes/bigcommerce.svg)](https://david-dm.org/ideal-postcodes/bigcommerce)
 [![Release](https://github.com/ideal-postcodes/bigcommerce/workflows/Release/badge.svg)](https://github.com/ideal-postcodes/bigcommerce/actions)
+![CI](https://github.com/ideal-postcodes/bigcommerce/workflows/CI/badge.svg?branch=master)
 
 `@ideal-postcodes/bigcommerce` builds the integration code to enable UK address search and validation on BigCommerce address forms.
 
