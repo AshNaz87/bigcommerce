@@ -38,6 +38,12 @@ Upon loading, the script will exit unless a global configuration object (`idpcCo
 <script>
 ```
 
+## Screenshots
+
+Address autocompletion
+
+![Address Autocomplete](https://img.ideal-postcodes.co.uk/bigcommerce-autocomplete.png)
+
 ## Test
 
 ```bash
