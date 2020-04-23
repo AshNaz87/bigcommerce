@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://img.ideal-postcodes.co.uk/Ideal%20Postcodes%20Browser%20Logo@3x.png" alt="Ideal Postcodes BigCommerce Integration">
+  <img src="https://img.ideal-postcodes.co.uk/BigCommerce%20Integration%20Logo%403x.png" alt="Ideal Postcodes BigCommerce Integration">
 </h1>
 
 > Add UK address search and validation to BigCommerce address forms
