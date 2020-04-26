@@ -1,3 +1,4 @@
+/* tslint:disable:no-shadowed-variable */
 declare global {
   interface Window {
     IdealPostcodes: any;
@@ -262,17 +263,17 @@ interface AddressRetrieval {
   (options: Options): Handler;
 }
 
-export const addressRetrieval: AddressRetrieval = ({ targets, config }) => {
-  return (address) => {
-    update(targets.line_1, address.line_1);
-    update(targets.line_2, toLine2(address));
-    update(targets.post_town, address.post_town);
-    update(targets.county, address.county);
-    update(targets.postcode, address.postcode);
-    updateCountry(targets.country, address);
-    if (config.populateOrganisation)
-      update(targets.organisation, address.organisation_name);
-  };
+export const addressRetrieval: AddressRetrieval = ({ targets, config }) => (
+  address
+) => {
+  update(targets.line_1, address.line_1);
+  update(targets.line_2, toLine2(address));
+  update(targets.post_town, address.post_town);
+  update(targets.county, address.county);
+  update(targets.postcode, address.postcode);
+  updateCountry(targets.country, address);
+  if (config.populateOrganisation)
+    update(targets.organisation, address.organisation_name);
 };
 /**
  * Returns true if element is select
@@ -300,13 +301,14 @@ export const generateTimer: GenerateTimer = ({ pageTest, bind }) => {
   let timer: number | null = null;
 
   const start = (config: Config): number | null => {
-    if (pageTest() === false) return null;
+    if (!pageTest()) return null;
     timer = window.setInterval(() => {
       try {
         bind(config);
       } catch (e) {
         // Terminate timer if some exception is raised
         stop();
+        /* eslint no-console: ["error", { allow: ["log"] }] */
         console.log(e);
       }
     }, 1000);
