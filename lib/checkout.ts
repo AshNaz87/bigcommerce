@@ -4,7 +4,6 @@ import {
   loaded,
   markLoaded,
   getParent,
-  autocompleteOverride,
   fetchInputs,
   toLine2,
 } from "./util";
@@ -16,9 +15,10 @@ export const pageTest = (): boolean =>
 export const selectors = {
   line_1: "#addressLine1Input",
   line_2: "#addressLine2Input",
-  city: "#cityInput",
-  province: "#provinceInput",
+  post_town: "#cityInput",
+  county: "#provinceInput",
   postcode: "#postCodeInput",
+  organisation: "#",
 };
 
 export const bind = (config: Config) => {
@@ -36,8 +36,11 @@ export const bind = (config: Config) => {
   const parent = getParent(line_1, "fieldset");
   if (!parent) return;
 
+  // Fetch input fields, abort if key inputs are not present
   const inputs = fetchInputs(parent, selectors);
-  if (inputs === null) return;
+  if (inputs.line_1 === null) return;
+  if (inputs.post_town === null) return;
+  if (inputs.postcode === null) return;
 
   // Initialise autocomplete instance
   new window.IdealPostcodes.Autocomplete.Controller({
@@ -47,11 +50,13 @@ export const bind = (config: Config) => {
     onAddressRetrieved: (address: Address) => {
       update(inputs.line_1, address.line_1);
       update(inputs.line_2, toLine2(address));
-      update(inputs.city, address.post_town);
-      update(inputs.province, address.county);
+      update(inputs.post_town, address.post_town);
+      update(inputs.county, address.county);
       update(inputs.postcode, address.postcode);
+      if (config.populateOrganisation)
+        update(inputs.organisation, address.organisation_name);
     },
-    ...autocompleteOverride(config),
+    ...config.autocompleteOverride,
   });
 };
 

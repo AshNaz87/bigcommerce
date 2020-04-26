@@ -42,9 +42,10 @@ interface PageTest {
 export interface Selectors {
   line_1: string;
   line_2: string;
-  city: string;
-  province: string;
+  post_town: string;
+  county: string;
   postcode: string;
+  organisation: string;
 }
 
 export interface Config {
@@ -55,17 +56,20 @@ export interface Config {
   /**
    * Overrides generated attributes for autocomplete
    */
-  autocompleteOverride?: AutocompleteConfig;
-  postcodeLookup: boolean;
-  addressFinder: boolean;
+  autocompleteOverride: AutocompleteConfig;
+  /**
+   * Populate organisation from address
+   */
+  populateOrganisation: boolean;
 }
 
-export interface TargetInputs {
-  line_1: HTMLInputElement;
-  line_2: HTMLInputElement;
-  city: HTMLInputElement;
-  province: HTMLInputElement;
-  postcode: HTMLInputElement;
+export interface Targets {
+  line_1: HTMLElement | null;
+  line_2: HTMLElement | null;
+  post_town: HTMLElement | null;
+  county: HTMLElement | null;
+  postcode: HTMLElement | null;
+  organisation: HTMLElement | null;
 }
 
 /**

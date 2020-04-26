@@ -2,17 +2,11 @@ declare global {
   interface Window {
     IdealPostcodes: any;
     jQuery: any;
-    idpcConfig: Config;
+    idpcConfig: Partial<Config>;
   }
 }
 
-import {
-  Config,
-  Selectors,
-  TargetInputs,
-  Binding,
-  AutocompleteConfig,
-} from "./types";
+import { Config, Selectors, Targets, Binding } from "./types";
 import { Address } from "@ideal-postcodes/api-typings";
 
 /**
@@ -54,23 +48,19 @@ export const getParent = (
 export const fetchInputs = (
   parent: HTMLElement,
   selectors: Selectors
-): TargetInputs | null => {
-  const line_1 = parent.querySelector(selectors.line_1) as HTMLElement;
-  if (!isInput(line_1)) return null;
+): Targets => {
+  const line_1: HTMLElement | null = parent.querySelector(selectors.line_1);
+  const line_2: HTMLElement | null = parent.querySelector(selectors.line_2);
+  const post_town: HTMLElement | null = parent.querySelector(
+    selectors.post_town
+  );
+  const county: HTMLElement | null = parent.querySelector(selectors.county);
+  const postcode: HTMLElement | null = parent.querySelector(selectors.postcode);
+  const organisation: HTMLElement | null = parent.querySelector(
+    selectors.organisation
+  );
 
-  const line_2 = parent.querySelector(selectors.line_2) as HTMLElement;
-  if (!isInput(line_2)) return null;
-
-  const city = parent.querySelector(selectors.city) as HTMLElement;
-  if (!isInput(city)) return null;
-
-  const province = parent.querySelector(selectors.province) as HTMLElement;
-  if (!isInput(province)) return null;
-
-  const postcode = parent.querySelector(selectors.postcode) as HTMLElement;
-  if (!isInput(postcode)) return null;
-
-  return { line_1, line_2, city, province, postcode };
+  return { line_1, line_2, post_town, county, postcode, organisation };
 };
 
 /**
@@ -84,7 +74,9 @@ const isInput = (e: HTMLElement | null): e is HTMLInputElement => {
 /**
  * Updates input value and dispatches change envet
  */
-export const update = (input: HTMLInputElement, value: string) => {
+export const update = (input: HTMLElement | null, value: string) => {
+  if (!input) return;
+  if (!isInput(input)) return;
   input.value = value;
   input.dispatchEvent(new Event("change"));
 };
@@ -155,10 +147,14 @@ const loadScript = (src: string, integrity?: string): HTMLScriptElement => {
   return script;
 };
 
-export const config = (): Config | undefined => window.idpcConfig;
+const defaults: Config = {
+  apiKey: "",
+  populateOrganisation: true,
+  autocompleteOverride: {},
+};
 
-export const autocompleteOverride = (config: Config): AutocompleteConfig => {
-  const { autocompleteOverride } = config;
-  if (autocompleteOverride === undefined) return {};
-  return autocompleteOverride;
+export const config = (): Config | undefined => {
+  const c = window.idpcConfig;
+  if (c === undefined) return;
+  return { ...defaults, ...c };
 };
