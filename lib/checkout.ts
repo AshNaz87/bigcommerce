@@ -1,11 +1,9 @@
-import { Address } from "@ideal-postcodes/api-typings";
 import {
-  update,
-  loaded,
-  markLoaded,
+  getAnchor,
   getParent,
-  fetchInputs,
-  toLine2,
+  getTargets,
+  addressRetrieval,
+  generateTimer,
 } from "./util";
 import { Binding, Config } from "./types";
 
@@ -18,29 +16,21 @@ export const selectors = {
   post_town: "#cityInput",
   county: "#provinceInput",
   postcode: "#postCodeInput",
-  organisation: "#",
+  organisation: "#companyInput",
+  country: "#countryCodeInput",
 };
 
 export const bind = (config: Config) => {
-  const line_1 = document.querySelector(selectors.line_1) as HTMLInputElement;
-
-  // Exit if input not found
-  if (line_1 === null) return;
-  // Exit if plugin already initialised on input
-  if (loaded(line_1)) return;
-
-  // Tag form as loaded
-  markLoaded(line_1);
+  const anchor = getAnchor(selectors.line_1) as HTMLInputElement;
+  if (anchor === null) return;
 
   // Retrieve other fields by scoping to parent
-  const parent = getParent(line_1, "fieldset");
+  const parent = getParent(anchor, "fieldset");
   if (!parent) return;
 
   // Fetch input fields, abort if key inputs are not present
-  const inputs = fetchInputs(parent, selectors);
-  if (inputs.line_1 === null) return;
-  if (inputs.post_town === null) return;
-  if (inputs.postcode === null) return;
+  const targets = getTargets(parent, selectors);
+  if (targets === null) return;
 
   // Initialise autocomplete instance
   new window.IdealPostcodes.Autocomplete.Controller({
@@ -48,32 +38,12 @@ export const bind = (config: Config) => {
     inputField: selectors.line_1,
     outputFields: {},
     checkKey: true,
-    onAddressRetrieved: (address: Address) => {
-      update(inputs.line_1, address.line_1);
-      update(inputs.line_2, toLine2(address));
-      update(inputs.post_town, address.post_town);
-      update(inputs.county, address.county);
-      update(inputs.postcode, address.postcode);
-      if (config.populateOrganisation)
-        update(inputs.organisation, address.organisation_name);
-    },
+    onAddressRetrieved: addressRetrieval({ targets, config }),
     ...config.autocompleteOverride,
   });
 };
 
-let timer: number | null = null;
-
-export const start = (config: Config): number | null => {
-  if (pageTest() === false) return null;
-  timer = window.setInterval(() => bind(config), 1000);
-  return timer;
-};
-
-export const stop = () => {
-  if (timer === null) return;
-  window.clearInterval(timer);
-  timer = null;
-};
+export const { start, stop } = generateTimer({ pageTest, bind });
 
 export const binding: Binding = {
   pageTest,

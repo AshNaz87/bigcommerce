@@ -6,7 +6,19 @@ declare global {
   }
 }
 
-import { Config, Selectors, Targets, Binding } from "./types";
+import {
+  Country,
+  ChannelIslandIso,
+  CountryIso,
+  Bind,
+  Start,
+  Stop,
+  PageTest,
+  Config,
+  Selectors,
+  Targets,
+  Binding,
+} from "./types";
 import { Address } from "@ideal-postcodes/api-typings";
 
 /**
@@ -43,12 +55,12 @@ export const getParent = (
 /**
  * Returns an object of attributes mapped to HTMLInputElement
  *
- * Returns null if any invalid selectors
+ * Returns null if any critical elements are not present (line 1, post_town, postcode)
  */
-export const fetchInputs = (
+export const getTargets = (
   parent: HTMLElement,
   selectors: Selectors
-): Targets => {
+): Targets | null => {
   const line_1: HTMLElement | null = parent.querySelector(selectors.line_1);
   const line_2: HTMLElement | null = parent.querySelector(selectors.line_2);
   const post_town: HTMLElement | null = parent.querySelector(
@@ -59,8 +71,13 @@ export const fetchInputs = (
   const organisation: HTMLElement | null = parent.querySelector(
     selectors.organisation
   );
+  const country: HTMLElement | null = parent.querySelector(selectors.country);
 
-  return { line_1, line_2, post_town, county, postcode, organisation };
+  if (line_1 === null) return null;
+  if (post_town === null) return null;
+  if (postcode === null) return null;
+
+  return { line_1, line_2, post_town, county, postcode, organisation, country };
 };
 
 /**
@@ -77,8 +94,7 @@ const isInput = (e: HTMLElement | null): e is HTMLInputElement => {
 export const update = (input: HTMLElement | null, value: string) => {
   if (!input) return;
   if (!isInput(input)) return;
-  input.value = value;
-  input.dispatchEvent(new Event("change"));
+  change(input, value);
 };
 
 /**
@@ -157,4 +173,156 @@ export const config = (): Config | undefined => {
   const c = window.idpcConfig;
   if (c === undefined) return;
   return { ...defaults, ...c };
+};
+
+/**
+ * Converts Channel Island Country to Channel Island SO
+ */
+const toCiIso = (address: Address): ChannelIslandIso | null => {
+  if (/^GY/.test(address.postcode)) return "GG";
+  if (/^JE/.test(address.postcode)) return "JE";
+  return null;
+};
+
+/**
+ * Converts a country to its ISO code
+ */
+const toIso = (address: Address): CountryIso | null => {
+  const country: Country = address.country as Country;
+  if (country === "England") return "GB";
+  if (country === "Scotland") return "GB";
+  if (country === "Wales") return "GB";
+  if (country === "Northern Ireland") return "GB";
+  if (country === IOM) return "IM";
+  if (country === "Channel Islands") return toCiIso(address);
+  return null;
+};
+
+const UK = "United Kingdom";
+const IOM = "Isle of Man";
+
+const hasValue = (select: HTMLSelectElement, value: string | null): boolean => {
+  if (value === null) return false;
+  return select.querySelector(`[value="${value}"]`) !== null;
+};
+
+type BcCountry = "United Kingdom" | "Jersey" | "Guernsey" | "Isle of Man";
+
+/**
+ *  BigCommerce specific country name
+ */
+const toBcCountry = (address: Address): BcCountry | null => {
+  const country: Country = address.country as Country;
+  if (country === "England") return UK;
+  if (country === "Scotland") return UK;
+  if (country === "Wales") return UK;
+  if (country === "Northern Ireland") return UK;
+  if (country === IOM) return IOM;
+  if (country === "Channel Islands") {
+    const iso = toCiIso(address);
+    if (iso === "GG") return "Guernsey";
+    if (iso === "JE") return "Jersey";
+  }
+  return null;
+};
+
+/**
+ * Updates country in BC country field given address selected
+ */
+export const updateCountry = (select: HTMLElement | null, address: Address) => {
+  if (!select) return;
+  if (!isSelect(select)) return;
+
+  const iso = toIso(address);
+  if (hasValue(select, iso)) change(select, iso);
+
+  const bcc = toBcCountry(address);
+  if (hasValue(select, bcc)) change(select, bcc);
+};
+
+const change = (
+  e: HTMLInputElement | HTMLSelectElement,
+  value: string | null
+) => {
+  if (value === null) return;
+  e.value = value;
+  e.dispatchEvent(new Event("change"));
+};
+
+interface Options {
+  targets: Targets;
+  config: Config;
+}
+
+interface Handler {
+  (address: Address): void;
+}
+
+interface AddressRetrieval {
+  (options: Options): Handler;
+}
+
+export const addressRetrieval: AddressRetrieval = ({ targets, config }) => {
+  return (address) => {
+    update(targets.line_1, address.line_1);
+    update(targets.line_2, toLine2(address));
+    update(targets.post_town, address.post_town);
+    update(targets.county, address.county);
+    update(targets.postcode, address.postcode);
+    updateCountry(targets.country, address);
+    if (config.populateOrganisation)
+      update(targets.organisation, address.organisation_name);
+  };
+};
+/**
+ * Returns true if element is select
+ */
+const isSelect = (e: HTMLElement | null): e is HTMLSelectElement => {
+  if (e === null) return false;
+  return e instanceof HTMLSelectElement;
+};
+
+interface GenerateTimerOptions {
+  pageTest: PageTest;
+  bind: Bind;
+}
+
+interface TimerControls {
+  start: Start;
+  stop: Stop;
+}
+
+interface GenerateTimer {
+  (options: GenerateTimerOptions): TimerControls;
+}
+
+export const generateTimer: GenerateTimer = ({ pageTest, bind }) => {
+  let timer: number | null = null;
+
+  const start = (config: Config): number | null => {
+    if (pageTest() === false) return null;
+    timer = window.setInterval(() => bind(config), 1000);
+    return timer;
+  };
+
+  const stop = () => {
+    if (timer === null) return;
+    window.clearInterval(timer);
+    timer = null;
+  };
+
+  return { start, stop };
+};
+
+/**
+ * Retrieves an anchor defined by a query selector
+ *
+ * Checks if anchor has been loaded, if not, marks it as loaded
+ */
+export const getAnchor = (selector: string): HTMLElement | null => {
+  const anchor = document.querySelector(selector) as HTMLInputElement;
+  if (anchor === null) return null;
+  if (loaded(anchor)) return null;
+  markLoaded(anchor);
+  return anchor;
 };

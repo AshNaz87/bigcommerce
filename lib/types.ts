@@ -23,19 +23,19 @@ export interface Binding {
   stop: Stop;
 }
 
-interface Start {
+export interface Start {
   (config: Config): number | null;
 }
 
-interface Stop {
+export interface Stop {
   (): void;
 }
 
-interface Bind {
+export interface Bind {
   (config: Config): void;
 }
 
-interface PageTest {
+export interface PageTest {
   (): boolean;
 }
 
@@ -46,6 +46,7 @@ export interface Selectors {
   county: string;
   postcode: string;
   organisation: string;
+  country: string;
 }
 
 export interface Config {
@@ -70,9 +71,31 @@ export interface Targets {
   county: HTMLElement | null;
   postcode: HTMLElement | null;
   organisation: HTMLElement | null;
+  country: HTMLElement | null;
 }
 
 /**
  *  Placeholder
  */
 export type AutocompleteConfig = object;
+
+/**
+ *  Countries returned by API
+ */
+export type Country =
+  | "England"
+  | "Wales"
+  | "Northern Ireland"
+  | "Scotland"
+  | "Channel Islands"
+  | "Isle of Man";
+
+/**
+ * Channel Island ISO Codes
+ */
+export type ChannelIslandIso = "JE" | "GG";
+
+/**
+ * Countries recognised by bigcommerce
+ */
+export type CountryIso = "GB" | "IM" | ChannelIslandIso;
