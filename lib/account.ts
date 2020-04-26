@@ -34,6 +34,12 @@ export const bind = (config: Config) => {
   // Tag form as loaded
   markLoaded(line_1);
 
+  // Cancel any float on input
+  line_1.setAttribute(
+    "style",
+    (line_1.getAttribute("style") || "") + "; float: none;"
+  );
+
   // Retrieve other fields by scoping to parent
   const parent = getParent(line_1, "fieldset");
   if (!parent) return;

@@ -3,7 +3,8 @@ import { relevantPage, loadAutocomplete, config } from "./util";
 
 // Load up available bindings
 import * as checkout from "./checkout";
-const bindings: Binding[] = [checkout];
+import * as account from "./account";
+const bindings: Binding[] = [checkout, account];
 
 const startInitTimer = () => setTimeout(init, 1000);
 
