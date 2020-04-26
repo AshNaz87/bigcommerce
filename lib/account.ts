@@ -9,8 +9,10 @@ import {
 } from "./util";
 import { Binding, Config } from "./types";
 
-export const pageTest = (): boolean =>
-  window.location.pathname.includes("/account");
+export const pageTest = (): boolean => {
+  if (window.location.pathname.includes("/login.php")) return true;
+  return window.location.pathname.includes("/account.php");
+};
 
 export const selectors = {
   line_1: "#FormField_8_input",
