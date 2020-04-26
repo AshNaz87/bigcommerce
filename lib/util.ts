@@ -108,6 +108,8 @@ const head = document.head;
 //   "https://cdn.jsdelivr.net/npm/jquery-postcodes@3.0.8/dist/postcodes.min.js";
 const autocompleteUrl =
   "https://cdn.jsdelivr.net/npm/ideal-postcodes-autocomplete@0.2.1/dist/ideal-postcodes-autocomplete.min.js";
+const autocompleteIntegrity =
+  "sha256-lZPaPHBx7V2Gj9iAc8QfVcW02KlWB2gbrqXpGfiEGgo=";
 // const jQueryUrl =
 //   "https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js";
 const autocompleteStyles =
@@ -126,7 +128,7 @@ const loadAutocompleteStyles = () => {
  */
 export const loadAutocomplete = () => {
   loadAutocompleteStyles();
-  const script = loadScript(autocompleteUrl);
+  const script = loadScript(autocompleteUrl, autocompleteIntegrity);
   return head.appendChild(script);
 };
 
@@ -144,9 +146,11 @@ const loadStyle = (src: string): HTMLLinkElement => {
 /**
  * Inject script tag
  */
-const loadScript = (src: string): HTMLScriptElement => {
+const loadScript = (src: string, integrity?: string): HTMLScriptElement => {
   const script = document.createElement("script");
   script.type = "text/javascript";
+  script.crossOrigin = "anonymous";
+  if (integrity) script.integrity = integrity;
   script.src = src;
   return script;
 };
