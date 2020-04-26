@@ -47,6 +47,7 @@ export const bind = (config: Config) => {
     api_key: config.apiKey,
     inputField: selectors.line_1,
     outputFields: {},
+    checkKey: true,
     onAddressRetrieved: (address: Address) => {
       update(inputs.line_1, address.line_1);
       update(inputs.line_2, toLine2(address));
