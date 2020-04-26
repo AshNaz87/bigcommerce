@@ -4,6 +4,7 @@ import {
   loaded,
   markLoaded,
   getParent,
+  autocompleteOverride,
   fetchInputs,
   toLine2,
 } from "./util";
@@ -50,6 +51,7 @@ export const bind = (config: Config) => {
       update(inputs.province, address.county);
       update(inputs.postcode, address.postcode);
     },
+    ...autocompleteOverride(config),
   });
 };
 

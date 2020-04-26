@@ -48,7 +48,14 @@ export interface Selectors {
 }
 
 export interface Config {
+  /**
+   * Key to access service
+   */
   apiKey: string;
+  /**
+   * Overrides generated attributes for autocomplete
+   */
+  autocompleteOverride?: AutocompleteConfig;
   postcodeLookup: boolean;
   addressFinder: boolean;
 }
@@ -60,3 +67,8 @@ export interface TargetInputs {
   province: HTMLInputElement;
   postcode: HTMLInputElement;
 }
+
+/**
+ *  Placeholder
+ */
+export type AutocompleteConfig = object;

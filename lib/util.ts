@@ -6,7 +6,13 @@ declare global {
   }
 }
 
-import { Config, Selectors, TargetInputs, Binding } from "./types";
+import {
+  Config,
+  Selectors,
+  TargetInputs,
+  Binding,
+  AutocompleteConfig,
+} from "./types";
 import { Address } from "@ideal-postcodes/api-typings";
 
 /**
@@ -146,3 +152,9 @@ const loadScript = (src: string): HTMLScriptElement => {
 };
 
 export const config = (): Config | undefined => window.idpcConfig;
+
+export const autocompleteOverride = (config: Config): AutocompleteConfig => {
+  const { autocompleteOverride } = config;
+  if (autocompleteOverride === undefined) return {};
+  return autocompleteOverride;
+};
