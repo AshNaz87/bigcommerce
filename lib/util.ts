@@ -1,4 +1,12 @@
-import { Selectors, TargetInputs } from "./types";
+declare global {
+  interface Window {
+    IdealPostcodes: any;
+    jQuery: any;
+    idpcConfig: Config;
+  }
+}
+
+import { Config, Selectors, TargetInputs, Binding } from "./types";
 import { Address } from "@ideal-postcodes/api-typings";
 
 /**
@@ -83,3 +91,58 @@ export const toLine2 = (address: Address): string => {
   if (address.line_3.length === 0) return address.line_2;
   return address.line_2 + ", " + address.line_3;
 };
+
+export const relevantPage = (bindings: Binding[]): boolean =>
+  bindings.some((b) => b.pageTest());
+
+const head = document.head;
+
+// Script & CSS Urls
+// const postcodeLookupUrl =
+//   "https://cdn.jsdelivr.net/npm/jquery-postcodes@3.0.8/dist/postcodes.min.js";
+const autocompleteUrl =
+  "https://cdn.jsdelivr.net/npm/ideal-postcodes-autocomplete@0.2.1/dist/ideal-postcodes-autocomplete.min.js";
+// const jQueryUrl =
+//   "https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js";
+const autocompleteStyles =
+  "https://cdn.jsdelivr.net/npm/ideal-postcodes-autocomplete@0.2.1/css/ideal-postcodes-autocomplete.css";
+
+/**
+ * Load Autocomplete CSS
+ */
+const loadAutocompleteStyles = () => {
+  const link = loadStyle(autocompleteStyles);
+  return head.appendChild(link);
+};
+
+/**
+ * Load autocomplete plugin script
+ */
+export const loadAutocomplete = () => {
+  loadAutocompleteStyles();
+  const script = loadScript(autocompleteUrl);
+  return head.appendChild(script);
+};
+
+/**
+ * Inject CSS stylesheet
+ */
+const loadStyle = (src: string): HTMLLinkElement => {
+  const link = document.createElement("link");
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  link.href = src;
+  return link;
+};
+
+/**
+ * Inject script tag
+ */
+const loadScript = (src: string): HTMLScriptElement => {
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = src;
+  return script;
+};
+
+export const config = (): Config | undefined => window.idpcConfig;
