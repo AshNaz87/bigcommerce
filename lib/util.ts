@@ -301,7 +301,15 @@ export const generateTimer: GenerateTimer = ({ pageTest, bind }) => {
 
   const start = (config: Config): number | null => {
     if (pageTest() === false) return null;
-    timer = window.setInterval(() => bind(config), 1000);
+    timer = window.setInterval(() => {
+      try {
+        bind(config);
+      } catch (e) {
+        // Terminate timer if some exception is raised
+        stop();
+        console.log(e);
+      }
+    }, 1000);
     return timer;
   };
 
