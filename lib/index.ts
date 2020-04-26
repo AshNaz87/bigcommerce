@@ -21,7 +21,7 @@ const init = (): unknown => {
   // Exit if any of the below guard clauses fail
   const c = config();
   if (c === undefined) return;
-  if (relevantPage(bindings) === false) return;
+  if (!relevantPage(bindings)) return;
 
   // Retrieve assets
   loadAutocomplete();
