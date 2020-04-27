@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/ideal-postcodes/bigcommerce/compare/1.1.1...1.1.2) (2020-04-27)
+
+
+### Bug Fixes
+
+* **Autocomplete:** Trigger form events when addresses applied ([ffed056](https://github.com/ideal-postcodes/bigcommerce/commit/ffed056))
+
 ## [1.1.1](https://github.com/ideal-postcodes/bigcommerce/compare/1.1.0...1.1.1) (2020-04-27)
 
 
