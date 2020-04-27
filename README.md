@@ -38,6 +38,8 @@ Upon loading, the script will exit unless a global configuration object (`idpcCo
 <script>
 ```
 
+A list of configuration options can be found in our [guide](https://ideal-postcodes/guides/bigcommerce).
+
 ## Screenshots
 
 Address autocompletion
