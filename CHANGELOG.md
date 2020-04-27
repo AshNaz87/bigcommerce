@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/ideal-postcodes/bigcommerce/compare/1.1.0...1.1.1) (2020-04-27)
+
+
+### Bug Fixes
+
+* **Docs:** Add link to guide ([5fbbf46](https://github.com/ideal-postcodes/bigcommerce/commit/5fbbf46))
+
 # [1.1.0](https://github.com/ideal-postcodes/bigcommerce/compare/1.0.0...1.1.0) (2020-04-26)
 
 
