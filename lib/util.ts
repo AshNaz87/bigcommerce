@@ -92,10 +92,14 @@ const isInput = (e: HTMLElement | null): e is HTMLInputElement => {
 /**
  * Updates input value and dispatches change envet
  */
-export const update = (input: HTMLElement | null, value: string) => {
+export const update = (
+  input: HTMLElement | null,
+  value: string,
+  skipTrigger = false
+) => {
   if (!input) return;
   if (!isInput(input)) return;
-  change(input, value);
+  change(input, value, skipTrigger);
 };
 
 /**
@@ -241,13 +245,38 @@ export const updateCountry = (select: HTMLElement | null, address: Address) => {
   if (hasValue(select, bcc)) change(select, bcc);
 };
 
+/**
+ * Updates value of input or select field and triggers an update event
+ *
+ * https://github.com/facebook/react/issues/11488#issuecomment-558874287
+ */
 const change = (
   e: HTMLInputElement | HTMLSelectElement,
-  value: string | null
+  value: string | null,
+  skipTrigger?: boolean
 ) => {
   if (value === null) return;
-  e.value = value;
-  e.dispatchEvent(new Event("change"));
+  const o = { bubbles: true };
+  let event, setter;
+  if (isSelect(e)) {
+    event = new Event("select", o);
+    setter = (Object.getOwnPropertyDescriptor(
+      HTMLSelectElement.prototype,
+      "value"
+    ) as any).set;
+  }
+  if (isInput(e)) {
+    event = new Event("input", { bubbles: true });
+    setter = (Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      "value"
+    ) as any).set;
+  }
+  if (event === undefined) return;
+  if (setter === undefined) return;
+  setter.call(e, value);
+  if (!skipTrigger) e.dispatchEvent(event);
+  e.dispatchEvent(new Event("change", o));
 };
 
 interface Options {
@@ -266,7 +295,7 @@ interface AddressRetrieval {
 export const addressRetrieval: AddressRetrieval = ({ targets, config }) => (
   address
 ) => {
-  update(targets.line_1, address.line_1);
+  update(targets.line_1, address.line_1, true);
   update(targets.line_2, toLine2(address));
   update(targets.post_town, address.post_town);
   update(targets.county, address.county);
