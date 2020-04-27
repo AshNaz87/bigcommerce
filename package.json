@@ -8,7 +8,7 @@
   "bugs": {
     "url": "https://github.com/ideal-postcodes/bigcommerce/issues/new"
   },
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "dist/bigcommerce.min.js",
   "types": "dist/index.d.ts",
   "scripts": {
