@@ -19,7 +19,7 @@ BigCommerce introduced a breaking change? Contact [support](https://ideal-postco
 
 ## Links
 
-- [Guide](https://ideal-postcodes/guides/bigcommerce)
+- [Guide](https://ideal-postcodes.co.uk/guides/bigcommerce)
 - [Changelog](https://github.com/ideal-postcodes/bigcommerce/blob/master/CHANGELOG.md)
 - [Support](https://ideal-postcodes.co.uk)
 - [npm Module](https://www.npmjs.com/package/@ideal-postcodes/bigcommerce)
