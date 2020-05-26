@@ -30,8 +30,17 @@ jobs:
       - name: Install
         run: npm install
 
+      - name: Lint
+        run: npm run lint
+
       - name: Build
         run: npm run build
+
+      - name: Test
+        run: npm test
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          CYPRESS_API_KEY: ${{ secrets.API_KEY }}
 
       - name: Semantic Release
         run: npm run semantic-release

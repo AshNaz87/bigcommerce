@@ -59,3 +59,5 @@ dist
 .cache
 
 .DS_Store
+cypress/screenshots/
+cypress/videos/
