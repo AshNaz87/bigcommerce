@@ -49,5 +49,9 @@ Address autocompletion
 ## Test
 
 ```bash
-npm test
+# Build JavaScript bundle
+npm run build
+
+# Run Cypress test suite with API Key
+API_KEY='key' npm test
 ```
