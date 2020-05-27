@@ -26,8 +26,9 @@ describe("Shipping", () => {
 
   it("Autocomplete", () => {
     cy.get("#checkoutShippingAddress").within(() => {
-      cy.wait(2000);
+      cy.wait(5000);
       cy.get("#addressLine1Input").clear().type(address.line_1);
+      cy.wait(2000);
       cy.get(".idpc_ul li").first().click();
       cy.get("#addressLine1Input").should("have.value", address.line_1);
       cy.get("#addressLine2Input").should("have.value", address.line_2);
