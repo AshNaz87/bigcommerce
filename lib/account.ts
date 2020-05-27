@@ -1,11 +1,12 @@
 import {
-  getAnchor,
-  getParent,
   addressRetrieval,
   getTargets,
   generateTimer,
-} from "./util";
-import { Binding, Config } from "./types";
+  getAnchor,
+  getParent,
+  Binding,
+  Config,
+} from "@ideal-postcodes/jsutil";
 
 export const pageTest = (): boolean => {
   if (window.location.pathname.includes("/login.php")) return true;

@@ -1,11 +1,12 @@
 import {
+  addressRetrieval,
+  getTargets,
+  generateTimer,
   getAnchor,
   getParent,
-  getTargets,
-  addressRetrieval,
-  generateTimer,
-} from "./util";
-import { Binding, Config } from "./types";
+  Binding,
+  Config,
+} from "@ideal-postcodes/jsutil";
 
 export const pageTest = (): boolean =>
   window.location.pathname.includes("/checkout");

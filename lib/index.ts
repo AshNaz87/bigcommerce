@@ -1,5 +1,10 @@
-import { Binding } from "./types";
-import { relevantPage, loadAutocomplete, config } from "./util";
+import {
+  Binding,
+  loadAutocomplete,
+  relevantPage,
+  config,
+  autocompletePresent,
+} from "@ideal-postcodes/jsutil";
 
 // Load up available bindings
 import * as checkout from "./checkout";
@@ -18,21 +23,16 @@ const startInitTimer = () => setTimeout(init, 1000);
  * Starts bindings
  */
 const init = (): unknown => {
-  // Exit if any of the below guard clauses fail
+  // Abort if any of the below guard clauses fail
   const c = config();
   if (c === undefined) return;
   if (!relevantPage(bindings)) return;
 
   // Retrieve assets
-  loadAutocomplete();
+  loadAutocomplete(c);
+  if (!autocompletePresent(window)) return startInitTimer();
 
-  // Check if assets present, if not, try again later
-  if (window.IdealPostcodes === undefined) return startInitTimer();
-  if (window.IdealPostcodes.Autocomplete === undefined) return startInitTimer();
-  if (window.IdealPostcodes.Autocomplete.Controller === undefined)
-    return startInitTimer();
-
-  // When assets ready, apply bindings
+  // Assets are ready
   return bindings.forEach((b) => b.start(c));
 };
 
