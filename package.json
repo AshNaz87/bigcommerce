@@ -31,7 +31,7 @@
     "email": "support@ideal-postcodes.co.uk",
     "url": "https://ideal-postcodes.co.uk"
   },
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "MIT",
   "files": [
     "dist"
   ],

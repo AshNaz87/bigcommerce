@@ -7,7 +7,7 @@ const banner = `/**
  * @license 
  * Ideal Postcodes <https://ideal-postcodes.co.uk>
  * BigCommerce Integration
- * Copyright IDDQD Limited, all rights reserved
+ * MIT Licence
  */`;
 
 // Configure terser to ignore build info banner
