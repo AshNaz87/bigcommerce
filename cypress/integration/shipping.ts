@@ -9,7 +9,9 @@ describe("Shipping", () => {
         window.idpcConfig = {
           apiKey: Cypress.env("API_KEY"),
           populateOrganisation: true,
-          autocompleteOverride: {},
+          autocompleteOverride: {
+            checkKey: false,
+          },
         };
       },
       onLoad: (window) => {
@@ -22,10 +24,9 @@ describe("Shipping", () => {
     });
   });
 
-  it("Autocomplete", function () {
+  it("Autocomplete", () => {
     cy.get("#checkoutShippingAddress").within(() => {
-      cy.get("#addressLine1Input").clear().type(address.line_1);
-      cy.wait(5000);
+      cy.wait(2000);
       cy.get("#addressLine1Input").clear().type(address.line_1);
       cy.get(".idpc_ul li").first().click();
       cy.get("#addressLine1Input").should("have.value", address.line_1);

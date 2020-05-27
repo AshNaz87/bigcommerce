@@ -1,8 +1,3 @@
-Cypress.on("uncaught:exception", (err, runnable) => {
-  console.log(err);
-  return false;
-});
-
 import { address as fixtures } from "@ideal-postcodes/api-fixtures";
 const address = fixtures.england;
 
@@ -14,7 +9,9 @@ describe("Billing", () => {
         window.idpcConfig = {
           apiKey: Cypress.env("API_KEY"),
           populateOrganisation: true,
-          autocompleteOverride: {},
+          autocompleteOverride: {
+            checkKey: false,
+          },
         };
       },
       onLoad: (window) => {
@@ -27,10 +24,9 @@ describe("Billing", () => {
     });
   });
 
-  it("Autocomplete", function () {
+  it("Autocomplete", () => {
     cy.get("#checkoutBillingAddress").within(() => {
-      cy.get("#addressLine1Input").clear({ force: true }).type(address.line_1);
-      cy.wait(5000);
+      cy.wait(2002);
       cy.get("#addressLine1Input").clear({ force: true }).type(address.line_1);
       cy.get(".idpc_ul li").first().click();
       cy.get("#addressLine1Input").should("have.value", address.line_1);
