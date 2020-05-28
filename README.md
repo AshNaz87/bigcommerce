@@ -35,7 +35,7 @@ Upon loading, the script will exit unless a global configuration object (`idpcCo
   window.idpcConfig = {
     apiKey: "iddqd",
   };
-<script>
+</script>
 ```
 
 A list of configuration options can be found in our [guide](https://ideal-postcodes/guides/bigcommerce).
