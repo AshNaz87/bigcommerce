@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/ideal-postcodes/bigcommerce/compare/1.2.0...1.2.1) (2020-05-28)
+
+
+### Bug Fixes
+
+* **Build:** Omit test in build step ([2e8cc97](https://github.com/ideal-postcodes/bigcommerce/commit/2e8cc9797157928fbf46dba9cf04997dc905e3db))
+
 # [1.2.0](https://github.com/ideal-postcodes/bigcommerce/compare/1.1.2...1.2.0) (2020-05-28)
 
 
