@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/ideal-postcodes/bigcommerce/compare/1.1.2...1.2.0) (2020-05-28)
+
+
+### Features
+
+* **Deps:** Add JSUtil ([6fcb62f](https://github.com/ideal-postcodes/bigcommerce/commit/6fcb62f76c46e880e12b5855593d3fa4ee82672c))
+* **Licence:** Apply MIT licence ([2a2ef0a](https://github.com/ideal-postcodes/bigcommerce/commit/2a2ef0a869432061a98d99458bded99b96014eb4))
+
 ## [1.1.2](https://github.com/ideal-postcodes/bigcommerce/compare/1.1.1...1.1.2) (2020-04-27)
 
 
