@@ -3,7 +3,7 @@ const address = fixtures.england;
 
 describe("Billing", () => {
   before(() => {
-    cy.visit("./checkout/billing.html", {
+    cy.visit("./fixtures/checkout/billing.html", {
       onBeforeLoad: (window) => {
         // @ts-ignore
         window.idpcConfig = {
@@ -18,7 +18,10 @@ describe("Billing", () => {
         const document = window.document;
         const script = document.createElement("script");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", "../dist/bigcommerce.min.js");
+        script.setAttribute(
+          "src",
+          "http://localhost:60154/dist/bigcommerce.min.js"
+        );
         document.body.appendChild(script);
       },
     });

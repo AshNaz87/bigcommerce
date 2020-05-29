@@ -9,7 +9,7 @@ import {
 } from "@ideal-postcodes/jsutil";
 
 export const pageTest = (): boolean =>
-  window.location.pathname.includes("/account.php");
+  window.location.pathname.includes("/login.php");
 
 export const selectors = {
   line_1: "#FormField_8_input",
@@ -32,7 +32,7 @@ export const bind = (config: Config) => {
   );
 
   // Retrieve other fields by scoping to parent
-  const parent = getParent(anchor, "fieldset");
+  const parent = getParent(anchor, "form");
   if (!parent) return;
 
   const targets = getTargets(parent, selectors);

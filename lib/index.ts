@@ -9,7 +9,8 @@ import {
 // Load up available bindings
 import * as checkout from "./checkout";
 import * as account from "./account";
-const bindings: Binding[] = [checkout, account];
+import * as register from "./register";
+const bindings: Binding[] = [checkout, register, account];
 
 const startInitTimer = () => setTimeout(init, 1000);
 
