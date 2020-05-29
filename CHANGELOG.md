@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/ideal-postcodes/bigcommerce/compare/1.2.1...1.3.0) (2020-05-29)
+
+
+### Features
+
+* **Autocomplete:** Add autocomplete to registration and accounts page ([01d6d82](https://github.com/ideal-postcodes/bigcommerce/commit/01d6d82fc25cbfb5aa83985713a15dbdf5bbe50b))
+
 ## [1.2.1](https://github.com/ideal-postcodes/bigcommerce/compare/1.2.0...1.2.1) (2020-05-28)
 
 
