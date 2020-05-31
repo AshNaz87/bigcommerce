@@ -2,7 +2,7 @@ import { address as fixtures } from "@ideal-postcodes/api-fixtures";
 const address = fixtures.jersey;
 
 describe("Account page", () => {
-  describe("Autocomplete", () => {
+  describe("autocomplete", () => {
     before(() => {
       cy.visit("./fixtures/account.php/index.html", {
         onBeforeLoad: (window) => {
@@ -34,7 +34,7 @@ describe("Account page", () => {
     it("applies address autocomplete to line 1", () => {
       cy.wait(5000);
       cy.get("#FormField_8_input").clear().type(address.line_1);
-      cy.wait(2000);
+      cy.wait(3000);
       cy.get(".idpc_ul li").first().click();
       cy.get("#FormField_8_input").should("have.value", address.line_1);
       cy.get("#FormField_9_input").should(

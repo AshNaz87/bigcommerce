@@ -4,7 +4,7 @@ const address = fixtures.jersey;
 describe("Account page", () => {
   describe("Postcode Lookup", () => {
     before(() => {
-      cy.visit("./fixtures/account.php/index.html", {
+      cy.visit("./fixtures/login.php/index.html", {
         onBeforeLoad: (window) => {
           // @ts-ignore
           window.idpcConfig = {

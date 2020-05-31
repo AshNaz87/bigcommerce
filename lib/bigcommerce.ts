@@ -1,5 +1,11 @@
 import {
   loadAutocomplete,
+  Selectors,
+  generateTimer,
+  getAnchor,
+  getParent,
+  getTargets,
+  Targets,
   config,
   relevantPage,
   loadPostcodeLookup,
@@ -126,5 +132,53 @@ export const setup: Setup = ({ window, bindings }) => {
   if (!relevantPage(bindings)) return;
   if (!readyAssets({ config: c, window }))
     return setTimeout(() => setup({ window, bindings }), 1000);
-  return bindings.forEach((b) => b.start(c));
+  return bindings.forEach(({ pageTest, bind }) => {
+    const { start } = generateTimer({ pageTest, bind });
+    start(c);
+  });
 };
+
+const DEFAULT_SCOPE: keyof HTMLElementTagNameMap = "form";
+
+const DEFAULT_ANCHOR: keyof Selectors = "line_1";
+
+interface SetupBindOptions {
+  selectors: Selectors;
+  /**
+   * Query selector that defines anchor. Defaults to selectors.line_1
+   */
+  anchorSelector?: string;
+  /**
+   * Restricts subsequent selector scope once anchor is found. Defaults to `form`
+   */
+  parentScope?: string;
+}
+
+interface SetupBind {
+  (options: SetupBindOptions): PageBindings | undefined;
+}
+
+interface PageBindings {
+  anchor: HTMLElement;
+  targets: Targets;
+  parent: HTMLElement;
+}
+
+export const setupBind: SetupBind = ({
+  selectors,
+  anchorSelector,
+  parentScope,
+}) => {
+  const anchor = getAnchor(anchorSelector || selectors[DEFAULT_ANCHOR]);
+  if (anchor === null) return;
+
+  const parent = getParent(anchor, parentScope || DEFAULT_SCOPE);
+  if (!parent) return;
+
+  const targets = getTargets(parent, selectors);
+  if (targets === null) return;
+
+  return { targets, parent, anchor };
+};
+
+export const toId = (elem: HTMLElement): string => `#${elem.id}`;

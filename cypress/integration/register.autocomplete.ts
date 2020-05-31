@@ -1,20 +1,20 @@
 import { address as fixtures } from "@ideal-postcodes/api-fixtures";
 const address = fixtures.jersey;
 
-describe("Account page", () => {
-  describe("Postcode Lookup", () => {
+describe("Registration page", () => {
+  describe("autocomplete", () => {
     before(() => {
-      cy.visit("./fixtures/account.php/index.html", {
+      cy.visit("./fixtures/login.php/index.html", {
         onBeforeLoad: (window) => {
           // @ts-ignore
           window.idpcConfig = {
             apiKey: Cypress.env("API_KEY"),
             populateOrganisation: true,
             populateCounty: true,
-            autocomplete: false,
-            postcodeLookup: true,
-            postcodeLookupOverride: {
-              check_key: false,
+            autocomplete: true,
+            postcodeLookup: false,
+            autocompleteOverride: {
+              checkKey: false,
             },
           };
         },
@@ -26,18 +26,16 @@ describe("Account page", () => {
             "src",
             "http://localhost:60154/dist/bigcommerce.min.js"
           );
-          document.head.appendChild(script);
+          document.body.appendChild(script);
         },
       });
     });
 
-    it("applies postcode lookup to address form", () => {
+    it("applies autocomplete to the address form", () => {
       cy.wait(5000);
-      cy.get(".postcode-lookup").within(() => {
-        cy.get("input[type=text]").type(address.postcode);
-        cy.get("input[type=submit]").click();
-        cy.get("select").select("0");
-      });
+      cy.get("#FormField_8_input").clear().type(address.line_1);
+      cy.wait(3000);
+      cy.get(".idpc_ul li").first().click();
       cy.get("#FormField_8_input").should("have.value", address.line_1);
       cy.get("#FormField_9_input").should(
         "have.value",

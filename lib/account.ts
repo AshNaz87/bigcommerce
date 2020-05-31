@@ -1,14 +1,16 @@
 import {
   addressRetrieval,
-  getTargets,
   generateTimer,
-  getAnchor,
-  getParent,
   Binding,
   Config,
 } from "@ideal-postcodes/jsutil";
 
-import { insertBefore, createLookupElements } from "./bigcommerce";
+import {
+  toId,
+  setupBind,
+  insertBefore,
+  createLookupElements,
+} from "./bigcommerce";
 
 export const pageTest = (): boolean =>
   window.location.pathname.includes("/account.php");
@@ -23,27 +25,20 @@ export const selectors = {
   country: "#FormField_11_select",
 };
 
-const toId = (elem: HTMLElement): string => `#${elem.id}`;
-
 export const bind = (config: Config) => {
-  const anchor = getAnchor(selectors.line_1) as HTMLInputElement;
-  if (anchor === null) return;
+  const pageBindings = setupBind({ selectors });
+  if (!pageBindings) return;
 
-  // Cancel any float on input
-  anchor.setAttribute(
-    "style",
-    (anchor.getAttribute("style") || "") + "; float: none;"
-  );
-
-  // Retrieve other fields by scoping to parent
-  const parent = getParent(anchor, "fieldset");
-  if (!parent) return;
-
-  const targets = getTargets(parent, selectors);
-  if (targets === null) return;
+  const { anchor, targets } = pageBindings;
 
   // Initialise autocomplete instance
   if (config.autocomplete) {
+    // Cancel any float on input
+    anchor.setAttribute(
+      "style",
+      (anchor.getAttribute("style") || "") + "; float: none;"
+    );
+
     new window.IdealPostcodes.Autocomplete.Controller({
       api_key: config.apiKey,
       inputField: selectors.line_1,
@@ -71,20 +66,23 @@ export const bind = (config: Config) => {
       onAddressSelected: addressRetrieval({ targets, config }),
       input: toId(input),
       output_fields: {},
+      check_key: true,
       button: toId(button),
-      dropdownContainer: toId(dropdownContainer),
-      dropdownClass: "form-select",
+      dropdown_container: toId(dropdownContainer),
+      dropdown_class: "form-select",
       ...config.postcodeLookupOverride,
     });
   }
 };
 
+// TODO: Delete
 export const { start, stop } = generateTimer({ pageTest, bind });
 
 export const binding: Binding = {
   pageTest,
   selectors,
   bind,
+  // TODO: Delete
   start,
   stop,
 };

@@ -1,12 +1,16 @@
 import {
   addressRetrieval,
-  getTargets,
   generateTimer,
-  getAnchor,
-  getParent,
   Binding,
   Config,
 } from "@ideal-postcodes/jsutil";
+
+import {
+  toId,
+  setupBind,
+  insertBefore,
+  createLookupElements,
+} from "./bigcommerce";
 
 export const pageTest = (): boolean =>
   window.location.pathname.includes("/login.php");
@@ -22,39 +26,62 @@ export const selectors = {
 };
 
 export const bind = (config: Config) => {
-  const anchor = getAnchor(selectors.line_1) as HTMLInputElement;
-  if (anchor === null) return;
+  const pageBindings = setupBind({ selectors });
+  if (!pageBindings) return;
 
-  // Cancel any float on input
-  anchor.setAttribute(
-    "style",
-    (anchor.getAttribute("style") || "") + "; float: none;"
-  );
+  const { anchor, targets } = pageBindings;
 
-  // Retrieve other fields by scoping to parent
-  const parent = getParent(anchor, "form");
-  if (!parent) return;
+  if (config.autocomplete) {
+    // Cancel any float on input
+    anchor.setAttribute(
+      "style",
+      (anchor.getAttribute("style") || "") + "; float: none;"
+    );
 
-  const targets = getTargets(parent, selectors);
-  if (targets === null) return;
+    new window.IdealPostcodes.Autocomplete.Controller({
+      api_key: config.apiKey,
+      inputField: selectors.line_1,
+      outputFields: {},
+      checkKey: true,
+      onAddressRetrieved: addressRetrieval({ targets, config }),
+      ...config.autocompleteOverride,
+    });
+  }
 
-  // Initialise autocomplete instance
-  new window.IdealPostcodes.Autocomplete.Controller({
-    api_key: config.apiKey,
-    inputField: selectors.line_1,
-    outputFields: {},
-    checkKey: true,
-    onAddressRetrieved: addressRetrieval({ targets, config }),
-    ...config.autocompleteOverride,
-  });
+  if (config.postcodeLookup) {
+    const {
+      container,
+      input,
+      dropdownContainer,
+      button,
+    } = createLookupElements();
+
+    const anchorParent = anchor.parentNode;
+    if (anchorParent === null) return;
+    insertBefore({ elem: container, target: anchorParent as HTMLElement });
+
+    (jQuery as any)(toId(container)).setupPostcodeLookup({
+      api_key: config.apiKey,
+      onAddressSelected: addressRetrieval({ targets, config }),
+      input: toId(input),
+      output_fields: {},
+      check_key: true,
+      button: toId(button),
+      dropdown_container: toId(dropdownContainer),
+      dropdown_class: "form-select",
+      ...config.postcodeLookupOverride,
+    });
+  }
 };
 
+// TODO: Delete
 export const { start, stop } = generateTimer({ pageTest, bind });
 
 export const binding: Binding = {
   pageTest,
   selectors,
   bind,
+  // TODO: Delete
   start,
   stop,
 };
