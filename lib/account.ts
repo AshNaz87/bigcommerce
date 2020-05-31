@@ -8,6 +8,8 @@ import {
   Config,
 } from "@ideal-postcodes/jsutil";
 
+import { insertBefore, createLookupElements } from "./bigcommerce";
+
 export const pageTest = (): boolean =>
   window.location.pathname.includes("/account.php");
 
@@ -20,6 +22,8 @@ export const selectors = {
   organisation: "#FormField_6_input",
   country: "#FormField_11_select",
 };
+
+const toId = (elem: HTMLElement): string => `#${elem.id}`;
 
 export const bind = (config: Config) => {
   const anchor = getAnchor(selectors.line_1) as HTMLInputElement;
@@ -39,14 +43,40 @@ export const bind = (config: Config) => {
   if (targets === null) return;
 
   // Initialise autocomplete instance
-  new window.IdealPostcodes.Autocomplete.Controller({
-    api_key: config.apiKey,
-    inputField: selectors.line_1,
-    outputFields: {},
-    checkKey: true,
-    onAddressRetrieved: addressRetrieval({ targets, config }),
-    ...config.autocompleteOverride,
-  });
+  if (config.autocomplete) {
+    new window.IdealPostcodes.Autocomplete.Controller({
+      api_key: config.apiKey,
+      inputField: selectors.line_1,
+      outputFields: {},
+      checkKey: true,
+      onAddressRetrieved: addressRetrieval({ targets, config }),
+      ...config.autocompleteOverride,
+    });
+  }
+
+  if (config.postcodeLookup) {
+    const {
+      container,
+      input,
+      dropdownContainer,
+      button,
+    } = createLookupElements();
+
+    const anchorParent = anchor.parentNode;
+    if (anchorParent === null) return;
+    insertBefore({ elem: container, target: anchorParent as HTMLElement });
+
+    (jQuery as any)(toId(container)).setupPostcodeLookup({
+      api_key: config.apiKey,
+      onAddressSelected: addressRetrieval({ targets, config }),
+      input: toId(input),
+      output_fields: {},
+      button: toId(button),
+      dropdownContainer: toId(dropdownContainer),
+      dropdownClass: "form-select",
+      ...config.postcodeLookupOverride,
+    });
+  }
 };
 
 export const { start, stop } = generateTimer({ pageTest, bind });
