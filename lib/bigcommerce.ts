@@ -67,7 +67,7 @@ export const createLookupElements = () => {
 
   const button = document.createElement("input");
   button.type = "submit";
-  button.value = "Lookup Address";
+  button.value = "Find Address";
   button.className = "button button--primary";
   button.id = idGen();
 
