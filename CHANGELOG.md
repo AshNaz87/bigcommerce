@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/ideal-postcodes/bigcommerce/compare/2.0.0...2.0.1) (2020-06-01)
+
+
+### Bug Fixes
+
+* **Postcode Lookup:** Relabel search button ([32850e5](https://github.com/ideal-postcodes/bigcommerce/commit/32850e53808644548f4a4a1f1c766974a2476736))
+
 # [2.0.0](https://github.com/ideal-postcodes/bigcommerce/compare/1.3.0...2.0.0) (2020-06-01)
 
 
