@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/ideal-postcodes/bigcommerce/compare/1.3.0...2.0.0) (2020-06-01)
+
+
+### Features
+
+* **Postcode Lookup:** Enable postcode lookup ([014f1fb](https://github.com/ideal-postcodes/bigcommerce/commit/014f1fb5bdda05f19d211b3441b067839a614029))
+
+
+### BREAKING CHANGES
+
+* **Postcode Lookup:** Adds postcode lookup by default to address forms
+
 # [1.3.0](https://github.com/ideal-postcodes/bigcommerce/compare/1.2.1...1.3.0) (2020-05-29)
 
 
