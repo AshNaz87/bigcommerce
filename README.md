@@ -13,8 +13,6 @@
 
 For installation, feature list and configuration see our [guide](https://ideal-postcodes.co.uk/guides/bigcommerce).
 
-This integration injects address validation scripts at the site of BigCommerce's custom Google Analytics script box.
-
 BigCommerce introduced a breaking change? Contact [support](https://ideal-postcodes.co.uk/support).
 
 ## Links
@@ -28,23 +26,31 @@ BigCommerce introduced a breaking change? Contact [support](https://ideal-postco
 
 ## Configuration Options
 
-Upon loading, the script will exit unless a global configuration object (`idpcConfig`) is detected.
+Upon loading, the script will exit unless a [global configuration object](https://ideal-postcodes.co.uk/guides/integration-configuration) (`idpcConfig`) is detected.
 
 ```html
-<script type="text/javascript">
+<script>
   window.idpcConfig = {
     apiKey: "iddqd",
   };
 </script>
 ```
 
-A list of configuration options can be found in our [guide](https://ideal-postcodes/guides/bigcommerce).
+A list of configuration options can be found in our [guide](https://ideal-postcodes/guides/bigcommerce#configuration-defaults).
 
 ## Screenshots
 
-Address autocompletion
+### Address Autocomplete
+
+Activate address autocompletion on your address collection forms.
 
 ![Address Autocomplete](https://img.ideal-postcodes.co.uk/bigcommerce-autocomplete.png)
+
+### Postcode Lookup
+
+Enable Postcode Lookup on your address collection forms.
+
+![Postcode Lookup](https://img.ideal-postcodes.co.uk/bigcommerce-postcode-lookup-desktop.png)
 
 ## Test
 
@@ -53,5 +59,5 @@ Address autocompletion
 npm run build
 
 # Run Cypress test suite with API Key
-API_KEY='key' npm test
+CYPRESS_API_KEY='key' npm test
 ```
