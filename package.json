@@ -45,7 +45,7 @@
     "@ideal-postcodes/api-fixtures": "~1.1.0",
     "@ideal-postcodes/api-typings": "~1.1.0",
     "@ideal-postcodes/jsutil": "~2.0.0",
-    "@rollup/plugin-commonjs": "~12.0.0",
+    "@rollup/plugin-commonjs": "~13.0.0",
     "@rollup/plugin-node-resolve": "~8.0.0",
     "@types/jquery": "~3.3.38",
     "@typescript-eslint/eslint-plugin": "~3.1.0",
