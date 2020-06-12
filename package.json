@@ -44,7 +44,7 @@
     "@cablanchard/tsconfig": "~1.0.0",
     "@ideal-postcodes/api-fixtures": "~1.1.0",
     "@ideal-postcodes/api-typings": "~1.1.0",
-    "@ideal-postcodes/jsutil": "~2.0.0",
+    "@ideal-postcodes/jsutil": "~2.1.1",
     "@rollup/plugin-commonjs": "~13.0.0",
     "@rollup/plugin-node-resolve": "~8.0.0",
     "@types/jquery": "~3.3.38",

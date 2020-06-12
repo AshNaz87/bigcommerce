@@ -1,14 +1,13 @@
 import {
   addressRetrieval,
-  generateTimer,
   Binding,
   Config,
-} from "@ideal-postcodes/jsutil";
-
-import {
   toId,
   setupBind,
   insertBefore,
+} from "@ideal-postcodes/jsutil";
+
+import {
   createLookupElements,
 } from "./bigcommerce";
 
@@ -69,14 +68,8 @@ export const bind = (config: Config) => {
   }
 };
 
-// TODO: Delete
-export const { start, stop } = generateTimer({ pageTest, bind });
-
 export const binding: Binding = {
   pageTest,
   selectors,
-  bind,
-  // TODO: Delete
-  start,
-  stop,
+  bind
 };
