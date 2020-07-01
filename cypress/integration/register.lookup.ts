@@ -35,7 +35,7 @@ describe("Account page", () => {
       cy.wait(5000);
       cy.get(".postcode-lookup").within(() => {
         cy.get("input[type=text]").type(address.postcode);
-        cy.get("input[type=submit]").click();
+        cy.get("input[type=submit]").click({force:true});
         cy.get("select").select("0");
       });
       cy.get("#FormField_8_input").should("have.value", address.line_1);

@@ -35,7 +35,7 @@ describe("Registration page", () => {
       cy.wait(5000);
       cy.get("#FormField_8_input").clear().type(address.line_1);
       cy.wait(3000);
-      cy.get(".idpc_ul li").first().click();
+      cy.get(".idpc_ul li").first().click({force:true});
       cy.get("#FormField_8_input").should("have.value", address.line_1);
       cy.get("#FormField_9_input").should(
         "have.value",
